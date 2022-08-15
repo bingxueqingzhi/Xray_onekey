@@ -165,7 +165,7 @@ function dependency_install() {
   ${INS} lsof tar
   judge "安装 lsof tar"
 
-  if [[ "${ID}" == "centos" || "${ID}" == "ol" || "${ID}" == "rocky"]]; then
+  if [[ "${ID}" == "centos" || "${ID}" == "ol" || "${ID}" == "rocky" ]]; then
     ${INS} crontabs
   else
     ${INS} cron
