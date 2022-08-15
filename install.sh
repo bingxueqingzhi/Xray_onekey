@@ -165,14 +165,14 @@ function dependency_install() {
   ${INS} lsof tar
   judge "安装 lsof tar"
 
-  if [[ "${ID}" == "centos" || "${ID}" == "ol" ]]; then
+  if [[ "${ID}" == "centos" || "${ID}" == "ol" || "${ID}" == "rocky"]]; then
     ${INS} crontabs
   else
     ${INS} cron
   fi
   judge "安装 crontab"
 
-  if [[ "${ID}" == "centos" || "${ID}" == "ol" ]]; then
+  if [[ "${ID}" == "centos" || "${ID}" == "ol" || "${ID}" == "rocky" ]]; then
     touch /var/spool/cron/root && chmod 600 /var/spool/cron/root
     systemctl start crond && systemctl enable crond
   else
@@ -193,14 +193,14 @@ function dependency_install() {
   judge "安装/升级 systemd"
 
   # Nginx 后置 无需编译 不再需要
-  #  if [[ "${ID}" == "centos" ||  "${ID}" == "ol" ]]; then
+  #  if [[ "${ID}" == "centos" ||  "${ID}" == "ol" || "${ID}" == "rocky" ]]; then
   #    yum -y groupinstall "Development tools"
   #  else
   #    ${INS} build-essential
   #  fi
   #  judge "编译工具包 安装"
 
-  if [[ "${ID}" == "centos" ]]; then
+  if [[ "${ID}" == "centos" || "${ID}" == "rocky" ]]; then
     ${INS} pcre pcre-devel zlib-devel epel-release openssl openssl-devel
   elif [[ "${ID}" == "ol" ]]; then
     ${INS} pcre pcre-devel zlib-devel openssl openssl-devel
@@ -230,7 +230,7 @@ function basic_optimization() {
   echo '* hard nofile 65536' >>/etc/security/limits.conf
 
   # RedHat 系发行版关闭 SELinux
-  if [[ "${ID}" == "centos" || "${ID}" == "ol" ]]; then
+  if [[ "${ID}" == "centos" || "${ID}" == "ol" || "${ID}" == "rocky" ]]; then
     sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
     setenforce 0
   fi
@@ -397,7 +397,7 @@ function xray_install() {
 
 function ssl_install() {
   #  使用 Nginx 配合签发 无需安装相关依赖
-  #  if [[ "${ID}" == "centos" ||  "${ID}" == "ol" ]]; then
+  #  if [[ "${ID}" == "centos" ||  "${ID}" == "ol" || "${ID}" == "rocky" ]]; then
   #    ${INS} socat nc
   #  else
   #    ${INS} socat netcat
@@ -523,7 +523,7 @@ function xray_uninstall() {
   read -r uninstall_nginx
   case $uninstall_nginx in
   [yY][eE][sS] | [yY])
-    if [[ "${ID}" == "centos" || "${ID}" == "ol" ]]; then
+    if [[ "${ID}" == "centos" || "${ID}" == "ol" || "${ID}" == "rocky" ]]; then
       yum remove nginx -y
     else
       apt purge nginx -y
