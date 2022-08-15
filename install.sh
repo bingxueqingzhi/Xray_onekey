@@ -87,8 +87,13 @@ function system_check() {
     INS="yum install -y"
     ${INS} wget
     wget -N -P /etc/yum.repos.d/ https://raw.githubusercontent.com/wulabing/Xray_onekey/${github_branch}/basic/nginx.repo
-
-
+    
+  elif [[ "${ID}" == "rocky" && ${VERSION_ID} -ge 8 ]]; then
+    print_ok "当前系统为 rocky ${VERSION_ID} ${VERSION}"
+    INS="yum install -y"
+    ${INS} wget
+    wget -N -P /etc/yum.repos.d/ https://raw.githubusercontent.com/wulabing/Xray_onekey/${github_branch}/basic/nginx.repo
+    
   elif [[ "${ID}" == "ol" ]]; then
     print_ok "当前系统为 Oracle Linux ${VERSION_ID} ${VERSION}"
     INS="yum install -y"
